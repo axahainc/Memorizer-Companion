@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quran Memorizer's Companion</title>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <style>
+        /* Custom styles for the green theme */
+        .ui-page {
+            background-color: #e0f7e0; /* Light green background */
+        }
+        .ui-btn {
+            background-color: #4caf50; /* Green button */
+            color: white;
+        }
+        .ui-btn:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+
+<div data-role="page" id="home">
+    <div data-role="header">
+        <h1>Quran Memorizer's Companion</h1>
+    </div>
+
+    <div data-role="content">
+        <audio id="quranAudio" controls>
+            <source src="your-audio-file.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <br>
+        <a href="#" id="playButton" class="ui-btn">Play</a>
+        <a href="#" id="pauseButton" class="ui-btn">Pause</a>
+        <a href="#" id="stopButton" class="ui-btn">Stop</a>
+        <br>
+        <label for="speedControl">Playback Speed:</label>
+        <select id="speedControl" class="ui-select">
+            <option value="1">Normal</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+        </select>
+        <br>
+        <div>
+            <progress id="progressBar" value="0" max="100"></progress>
+        </div>
+    </div>
+
+    <div data-role="footer">
+        <h4>Memorization Progress Tracker</h4>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        const audio = document.getElementById('quranAudio');
+
+        // Play audio
+        $('#playButton').on('click', function() {
+            audio.play();
+        });
+
+        // Pause audio
+        $('#pauseButton').on('click', function() {
+            audio.pause();
+        });
+
+        // Stop audio
+        $('#stopButton').on('click', function() {
+            audio.pause();
+            audio.currentTime = 0; // Reset to start
+        });
+
+        // Change playback speed
+        $('#speedControl').on('change', function() {
+            audio.playbackRate = parseFloat($(this).val());
+        });
+
+        // Save progress
+        audio.addEventListener('pause', function() {
+            localStorage.setItem('progress', audio.currentTime);
+        });
+
+        // Load progress
+        $(window).on('load', function() {
+            let savedTime = localStorage.getItem('progress');
+            if (savedTime) {
+                audio.currentTime = savedTime;
+            }
+        });
+
+        // Update progress bar
+        setInterval(function() {
+            if (!audio.paused) {
+                $('#progressBar').val((audio.currentTime / audio.duration) * 100);
+            }
+        }, 1000);
+    });
+</script>
+
+</body>
+</html>
