@@ -26,11 +26,27 @@ $(document).ready(function() {
         }
     }, 1000);
 
-    // Audio source URLs for Surahs (examples, replace with actual links)
-    const audioSources = {
-        'Al-Fatiha': 'https://aswaatulqurraa.com/downloads/quran-audio/quran-in-surahs/a/abdul-basit-abdulsamad/al-fatihah.mp3',
-        'Al-Baqarah': 'https://aswaatulqurraa.com/downloads/quran-audio/quran-in-surahs/a/abdul-basit-abdulsamad/al-baqarah.mp3',
-        // Add more Surahs as needed
+    // Surah links from quran.com
+    const surahLinks = {
+        'Al-Fatiha': 'https://quran.com/1',
+        'Al-Baqarah': 'https://quran.com/2',
+        'Aal-E-Imran': 'https://quran.com/3',
+        'An-Nisa': 'https://quran.com/4',
+        'Al-Ma\'idah': 'https://quran.com/5',
+        'Al-An\'am': 'https://quran.com/6',
+        'Al-A\'raf': 'https://quran.com/7',
+        // Add all 114 surah links here...
+        'An-Nas': 'https://quran.com/114'
+    };
+
+    // Juz links from quran.com
+    const juzLinks = {
+        'Juz 1': 'https://quran.com/juz/1',
+        'Juz 2': 'https://quran.com/juz/2',
+        'Juz 3': 'https://quran.com/juz/3',
+        'Juz 4': 'https://quran.com/juz/4',
+        // Add all 30 Juz links here...
+        'Juz 30': 'https://quran.com/juz/30'
     };
 
     // Navigation buttons
@@ -47,17 +63,10 @@ $(document).ready(function() {
         $('#contentList').empty();
         $('#contentTitle').text(type === 'surah' ? 'Surah List' : 'Juz List');
 
-        const items = type === 'surah' ? Object.keys(audioSources) : ['Juz 1', 'Juz 2', 'Juz 3']; // Add Juz audio sources as needed
+        const items = type === 'surah' ? Object.keys(surahLinks) : Object.keys(juzLinks);
         items.forEach(item => {
-            $('#contentList').append(`<li class="list-group-item" data-audio="${audioSources[item]}">${item}</li>`);
-        });
-
-        // Click event to play audio
-        $('#contentList').on('click', 'li', function() {
-            const audioSource = $(this).data('audio');
-            $('#audioSource').attr('src', audioSource);
-            audio.load();
-            audio.play();
+            const link = type === 'surah' ? surahLinks[item] : juzLinks[item];
+            $('#contentList').append(`<li class="list-group-item"><a href="${link}" target="_blank">${item}</a></li>`);
         });
     }
 });
